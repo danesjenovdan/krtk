@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+sqlalchemy = "*"
+flask = "*"
+alembic = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+marshmallow = "*"
+types-flask-migrate = "*"
+
+[dev-packages]
+black = "*"
+mypy = "*"
+
+[requires]
+python_version = "3.12"
+
+[scripts]
+check-types = "mypy --strict --exclude=[migrations,tests] ."
+check-format = "black . --check"
+format = "black ."

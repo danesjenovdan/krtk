@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta property="author" content="Danes je nov dan, Inštitut za druga vprašanja">
+  <link rel="shortcut icon" href="">
+
+  <title>Danes je nov URL</title>
+
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="shortcut icon" href="https://danesjenovdan.si/favicon.ico" />
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,500,700,900&subset=latin,latin-ext'
+    rel='stylesheet' type='text/css'>
+
+  <link href="/static/style.css" rel="stylesheet" />
+  {% endblock %}
+</head>
+
+<body>
+  <div class="row header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="logo"><a href="https://agrument.danesjenovdan.si/dash" class="logo">Agrument dash</a></h1>
+          <h1><span class="title">Danes je nov URL /</span> Reading Pornhub's terms of service, going for a drive and
+            obeying all the traffic laws in Grand Theft Auto V.
+            Full agoraphobic, losing focus, cover blown; a book on getting better hand-delivered by a drone.
+            Total disassociation, fully out your mind; googling derealization, hating what you find.
+            That unapparent summer air in early fall; the quiet comprehending of the ending of it all.
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

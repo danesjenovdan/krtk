@@ -1,0 +1,70 @@
+{% extends "_base.html" %} {% block content %}
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="card card-white" v-scope v-cloak>
+      <div class="cardtitle">
+        <h3>Da se mi da URL</h3>
+        <div class="triangle triangle-top"></div>
+        <div class="triangle triangle-bottom"></div>
+      </div>
+      <div v-if="!shortenedURL">
+        <input
+          type="url"
+          class="form-control url-input"
+          v-model="fullURL"
+          @keyup.enter="shortenURL"
+          autofocus
+        />
+        <button class="btn btn-shorturl" @click="shortenURL">
+          Pošortnaj!
+        </button>
+      </div>
+      <div v-else>
+        <input
+          type="url"
+          class="form-control url-input"
+          :value="shortenedURL"
+        />
+        <button class="btn btn-shorturl" @click="copy">Skopiraj!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createApp } from "https://unpkg.com/petite-vue?module";
+
+  async function postDataToServer(data = {}) {
+    const response = await fetch("/_shorten_link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return [response.ok, await response.json()];
+  }
+
+  createApp({
+    fullURL: "", // entered by user
+    shortenedURL: "", // generated on server
+    async shortenURL() {
+      const [ok, data] = await postDataToServer({
+        destination: this.fullURL,
+      });
+
+      if (ok) {
+        // URL was successfully shortened, store new alias from response in
+        // local state so component will re-render in clipboard-copy mode.
+        const {protocol, hostname} = new URL(window.location);
+        this.shortenedURL = `${protocol}//${hostname}/${data.alias}`
+      } else {
+        // Something went wrong, clear the input and dump error to console.
+        this.destination = "";
+        console.error("Error!", data);
+      }
+    },
+    async copy() {
+      await navigator.clipboard.writeText(this.shortenedURL);
+    },
+  }).mount();
+</script>
+{% endblock %}
