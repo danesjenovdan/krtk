@@ -12,7 +12,7 @@ from app import db
 class ShortenedLink(db.Model):  # type: ignore
     __tablename__ = "shortened_link"
 
-    alias: Mapped[str] = mapped_column(Text, primary_key=True)
+    alias: Mapped[str] = mapped_column(Text, primary_key=True, unique=True)
     destination: Mapped[str] = mapped_column(Text, nullable=False)
     created: Mapped[datetime.date] = mapped_column(
         DateTime, nullable=False, default=func.now()

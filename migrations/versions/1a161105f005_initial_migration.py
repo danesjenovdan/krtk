@@ -1,7 +1,7 @@
 """Initial migration
 
 Revision ID: 1a161105f005
-Revises: 
+Revises:
 Create Date: 2023-12-26 13:46:53.603601
 
 """
@@ -25,6 +25,7 @@ def upgrade():
         sa.Column("created", sa.DateTime(), nullable=False),
         sa.Column("is_custom", sa.Boolean(), nullable=False),
         sa.PrimaryKeyConstraint("alias"),
+        sa.UniqueConstraint("alias"),
     )
     # ### end Alembic commands ###
 
