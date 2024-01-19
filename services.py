@@ -1,5 +1,3 @@
-import random
-import string
 import re
 
 from db import (
