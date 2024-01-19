@@ -32,6 +32,9 @@ pipenv run check-types
 
 # Run formatter
 pipenv run format
+
+# Run tests
+pipenv run test
 ```
 
 ## Migrations
