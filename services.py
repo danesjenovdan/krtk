@@ -1,17 +1,10 @@
 import re
 
-from db import (
-    get_link_by_destination,
-    get_link_by_alias,
-    get_link_count_by_alias,
-    insert_link,
-    get_latest_non_custom_link,
-    ShortenedLink,
-)
+import db
 from custom_types import ShortenedLinkPayload
 
 
-def create_shortened_link(payload: ShortenedLinkPayload) -> ShortenedLink:
+def create_shortened_link(payload: ShortenedLinkPayload) -> db.ShortenedLink:
     destination: str = payload["destination"]
     alias: str | None = payload.get("alias")
     is_custom = bool(alias)
@@ -19,30 +12,30 @@ def create_shortened_link(payload: ShortenedLinkPayload) -> ShortenedLink:
     if not is_custom:
         # If the alias isn't a custom one, see if this exact URL was previously
         # shortened and just return that one.
-        existing_link = get_link_by_destination(destination)
+        existing_link = db.get_link_by_destination(destination)
         if existing_link:
             return existing_link
 
     new_alias = alias
 
     if not new_alias:
-        if last_shortened_link := get_latest_non_custom_link():
+        if last_shortened_link := db.get_latest_non_custom_link():
             last_alias = last_shortened_link.alias
             new_alias = _generate_next_alias(last_alias)
         else:
             # First alias ever 🎉
             new_alias = "a"
 
-    return insert_link(destination, new_alias, is_custom)
+    return db.insert_link(destination, new_alias, is_custom)
 
 
 def get_destination_for_alias(alias: str) -> str | None:
-    link = get_link_by_alias(alias)
+    link = db.get_link_by_alias(alias)
     return link.destination if link else None
 
 
 def link_with_alias_exists(alias: str) -> bool:
-    existing_link_count = get_link_count_by_alias(alias)
+    existing_link_count = db.get_link_count_by_alias(alias)
     return bool(existing_link_count > 0)
 
 
