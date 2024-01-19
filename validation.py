@@ -9,13 +9,13 @@ def _validate_unique_alias(alias: str) -> None:
         raise ValidationError(f"Alias `{alias}` already in use")
 
 
-class ShortenLinkPayload(Schema):
+class ShortenLinkPayloadSchema(Schema):
     destination = fields.Url(required=True)
     alias = fields.String(validate=[validate.Regexp("^[a-zA-Z0-9_-]*$")])
 
 
 def validate_shorten_link_payload(payload: Any) -> dict[str, list[str]] | None:
-    schema = ShortenLinkPayload()
+    schema = ShortenLinkPayloadSchema()
 
     try:
         schema.load(payload)
