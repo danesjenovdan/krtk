@@ -6,7 +6,7 @@ from services import link_with_alias_exists
 
 def _validate_unique_alias(alias: str) -> None:
     if link_with_alias_exists(alias):
-        raise ValidationError(f"Alias `{alias}` already in use")
+        raise ValidationError(f"Alias `{alias}` already in use.", "alias")
 
 
 class ShortenLinkPayloadSchema(Schema):
