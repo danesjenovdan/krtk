@@ -23,5 +23,6 @@ def validate_shorten_link_payload(payload: Any) -> dict[str, list[str]] | None:
             _validate_unique_alias(alias)
         return None
     except ValidationError as err:
-        assert isinstance(err.messages, dict)
-        return err.messages
+        error_messages = err.normalized_messages()  # type: ignore[no-untyped-call]
+        assert isinstance(error_messages, dict)
+        return error_messages
