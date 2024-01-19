@@ -14,7 +14,7 @@ class ShortenLinkPayload(Schema):
     alias = fields.String(validate=[validate.Regexp("^[a-zA-Z0-9_-]*$")])
 
 
-def validate_payload(payload: Any) -> dict[str, list[str]] | None:
+def validate_shorten_link_payload(payload: Any) -> dict[str, list[str]] | None:
     schema = ShortenLinkPayload()
 
     try:

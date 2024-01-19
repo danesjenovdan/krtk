@@ -9,7 +9,7 @@ DJND_MAIN_PAGE_URL = "https://danesjenovdan.si/"
 
 def init_routes(app: Flask) -> None:
     from services import create_shortened_link, get_destination_for_alias
-    from validation import validate_payload
+    from validation import validate_shorten_link_payload
 
     @app.route("/")
     def redirect_to_main_page() -> Response:
@@ -21,7 +21,7 @@ def init_routes(app: Flask) -> None:
 
     @app.route("/_shorten_link", methods=["POST"])
     def shorten_link() -> Response:
-        if errors := validate_payload(request.json):
+        if errors := validate_shorten_link_payload(request.json):
             return make_response(errors, 400)
 
         payload = cast(ShortenedLinkPayload, request.json)
