@@ -25,15 +25,15 @@ class ShortenedLink(db.Model):  # type: ignore
         return {"alias": self.alias, "destination": self.destination}
 
 
-def link_with_alias_exists(alias: str) -> bool:
+def get_link_count_by_alias(alias: str) -> int:
     # This is apparently how you correctly do a count in SQLAlchemy 2
     # https://github.com/sqlalchemy/sqlalchemy/issues/5908
     statement = (
         db.select(db.func.count()).select_from(ShortenedLink).filter_by(alias=alias)
     )
-    existing_link_count = db.session.scalar(statement)
+    existing_link_count: int = db.session.scalar(statement)
 
-    return bool(existing_link_count > 0)
+    return existing_link_count
 
 
 def get_link_by_destination(destination: str) -> ShortenedLink | None:

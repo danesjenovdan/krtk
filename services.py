@@ -5,6 +5,7 @@ import re
 from db import (
     get_link_by_destination,
     get_link_by_alias,
+    get_link_count_by_alias,
     insert_link,
     get_latest_non_custom_link,
     ShortenedLink,
@@ -40,6 +41,11 @@ def create_shortened_link(payload: ShortenedLinkPayload) -> ShortenedLink:
 def get_destination_for_alias(alias: str) -> str | None:
     link = get_link_by_alias(alias)
     return link.destination if link else None
+
+
+def link_with_alias_exists(alias: str) -> bool:
+    existing_link_count = get_link_count_by_alias(alias)
+    return bool(existing_link_count > 0)
 
 
 def _generate_next_alias(last_alias: str) -> str:

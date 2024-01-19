@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, ValidationError, validate
 from typing import Any
 
-from db import link_with_alias_exists
+from services import link_with_alias_exists
 
 
 def _validate_unique_alias(alias: str) -> None:
