@@ -4,7 +4,7 @@ from werkzeug.wrappers.response import Response
 
 from custom_types import ShortenedLinkPayload
 
-DJND_MAIN_PAGE_URL = "https://danesjenovdan.si/"
+DJND_MAIN_PAGE_URL = "https://danesjenovdan.si"
 
 
 def init_routes(app: Flask) -> None:
