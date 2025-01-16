@@ -1,5 +1,6 @@
 import datetime
 from typing import Set
+
 from db import ShortenedLink
 
 shortened_links: Set[ShortenedLink] = set()

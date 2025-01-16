@@ -1,5 +1,6 @@
-from marshmallow import Schema, fields, ValidationError, validate
 from typing import Any
+
+from marshmallow import Schema, ValidationError, fields, validate
 
 from services import link_with_alias_exists
 

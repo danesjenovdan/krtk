@@ -1,13 +1,13 @@
-from tests import mock_db
-
 from unittest import TestCase
 from unittest.mock import patch
+
 from services import (
-    link_with_alias_exists,
+    _generate_next_alias,
     create_shortened_link,
     get_destination_for_alias,
-    _generate_next_alias,
+    link_with_alias_exists,
 )
+from tests import mock_db
 
 
 @patch("services.db", new=mock_db)

@@ -1,5 +1,6 @@
 from typing import cast
-from flask import Flask, render_template, redirect, request, make_response
+
+from flask import Flask, make_response, redirect, render_template, request
 from werkzeug.wrappers.response import Response
 
 from custom_types import ShortenedLinkPayload

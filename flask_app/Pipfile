@@ -16,6 +16,7 @@ psycopg = "*"
 [dev-packages]
 black = "*"
 mypy = "*"
+isort = "*"
 
 [requires]
 python_version = "3.13"
