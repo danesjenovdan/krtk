@@ -13,7 +13,17 @@ The word itself is a vowel-less version of _kratek_, meaning _short_ in
 Slovenian. Also sounds like [krtek](https://sl.wikipedia.org/wiki/Krtek) which
 seemed cute.
 
-## Dev environment
+## Development with docker compose (recommended)
+
+```sh
+# Create/run containers (krtk flask app and postgresql database)
+docker compose up
+
+# After first startup run migrations
+docker compose exec krtk flask db upgrade
+```
+
+## Dev environment without docker
 Things are handled with `pipenv`:
 
 ```bash

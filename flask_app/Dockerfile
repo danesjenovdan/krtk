@@ -30,6 +30,12 @@ EXPOSE 8000
 ENV PYTHONUNBUFFERED=1 \
     PORT=8000
 
+# Install system packages required by Flask.
+RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
+    build-essential \
+    libpq-dev \
+ && rm -rf /var/lib/apt/lists/*
+
 # Install the application server.
 RUN pip install "gunicorn==23.0.0"
 
