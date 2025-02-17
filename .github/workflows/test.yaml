@@ -1,0 +1,36 @@
+name: Run tests
+on:
+  push:
+    branches:
+      - "dev"
+jobs:
+  test:
+    name: Run Python tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install pipenv
+        run: |
+          pip install pipenv
+
+      - name: Install dependencies
+        working-directory: ./flask_app
+        run: |
+          pipenv install -d
+
+      - name: Check types with mypy
+        working-directory: ./flask_app
+        run: |
+          pipenv run check-types
+
+      - name: Run tests
+        working-directory: ./flask_app
+        run: |
+          pipenv run test
