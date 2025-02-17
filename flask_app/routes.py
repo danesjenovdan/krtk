@@ -35,8 +35,9 @@ def init_routes(app: Flask) -> None:
     @app.route("/yomamasofat", methods=["GET", "POST"], strict_slashes=False)
     def legacy_shorten_link() -> Response:
         dest = None
-        if not dest and request.is_json:
-            dest = request.json.get("fatmama")
+        json_data = request.get_json(silent=True)
+        if json_data is not None:
+            dest = json_data.get("fatmama")
         if not dest:
             dest = request.values.get("fatmama")
         if not dest:

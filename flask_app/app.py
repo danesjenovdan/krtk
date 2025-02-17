@@ -21,7 +21,7 @@ def create_app() -> Flask:
         database=os.getenv("FLASK_DATABASE_NAME", "flask"),
         username=os.getenv("FLASK_DATABASE_USERNAME", "flask"),
         password=os.getenv("FLASK_DATABASE_PASSWORD", "changeme"),
-        port=os.getenv("FLASK_DATABASE_PORT", "5432"),
+        port=int(os.getenv("FLASK_DATABASE_PORT") or 5432),
     )
     db.init_app(app)
     migrate.init_app(app, db)
