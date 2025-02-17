@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krtk
+  labels:
+    app: krtk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: krtk
+  template:
+    metadata:
+      labels:
+        app: krtk
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: migrate
+          image: krtk
+          command:
+            - flask
+            - db
+            - upgrade
+          envFrom:
+            - secretRef:
+                name: krtk-secrets
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 100m
+            limits:
+              memory: 100Mi
+              cpu: 100m
+      containers:
+        - name: krtk
+          image: krtk
+          command:
+            - gunicorn
+            - app:create_app()
+            - -b
+            - 0.0.0.0:8000
+            - --log-level
+            - DEBUG
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: krtk-secrets
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 100m
+            limits:
+              memory: 100Mi
+              cpu: 100m
