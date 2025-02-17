@@ -6,6 +6,7 @@ from werkzeug.wrappers.response import Response
 from custom_types import ShortenedLinkPayload
 
 DJND_MAIN_PAGE_URL = "https://danesjenovdan.si"
+DJND_SHORT_DOMAIN = "djnd.si"
 
 
 def init_routes(app: Flask) -> None:
@@ -29,6 +30,38 @@ def init_routes(app: Flask) -> None:
         link = create_shortened_link(payload)
 
         return make_response(link.to_json(), 201)
+
+    # legacy route for backwards compatibility
+    @app.route("/yomamasofat", methods=["GET", "POST"], strict_slashes=False)
+    def legacy_shorten_link() -> Response:
+        dest = None
+        if not dest and request.is_json:
+            dest = request.json.get("fatmama")
+        if not dest:
+            dest = request.values.get("fatmama")
+        if not dest:
+            response = make_response("Enter a URL.", 200)
+            response.mimetype = "text/plain"
+            return response
+
+        payload_dict = {"destination": dest}
+        if errors := validate_shorten_link_payload(payload_dict):
+            try:
+                error = errors["destination"][0]
+            except:
+                error = "Unknown error."
+            response = make_response(error, 200)
+            response.mimetype = "text/plain"
+            return response
+
+        payload = cast(ShortenedLinkPayload, payload_dict)
+        link = create_shortened_link(payload)
+        link_dict = link.to_json()
+        short_url = f'https://{DJND_SHORT_DOMAIN}/{link_dict["alias"]}'
+
+        response = make_response(short_url, 200)
+        response.mimetype = "text/plain"
+        return response
 
     @app.route("/<alias>")
     def redirect_to_previously_shortened_url(alias: str) -> Response:
