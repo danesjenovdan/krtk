@@ -23,6 +23,10 @@ docker compose up
 docker compose exec krtk flask db upgrade
 ```
 
+## Importing old link data from another shortener
+
+See [Importing from MySQL dump](./importing-from-mysql-dump.md).
+
 ## Dev environment without docker
 Things are handled with `pipenv`:
 
