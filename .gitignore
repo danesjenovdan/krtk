@@ -1,5 +1,6 @@
 dump*.sql
 dump*.db
+dump*.csv
 *.todo
 
 kustomize/secrets.yaml

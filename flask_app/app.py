@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import URL
 
+from commands import init_commands
 from routes import init_routes
 
 db = SQLAlchemy()
@@ -28,5 +29,8 @@ def create_app() -> Flask:
 
     # Define routes
     init_routes(app)
+
+    # Register commands
+    init_commands(app, db)
 
     return app
