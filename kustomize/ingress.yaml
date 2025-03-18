@@ -8,10 +8,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - krtk.lb.djnd.si
+        - djnd.si
       secretName: krtk-tls
   rules:
-    - host: krtk.lb.djnd.si
+    - host: djnd.si
       http:
         paths:
           - path: /
