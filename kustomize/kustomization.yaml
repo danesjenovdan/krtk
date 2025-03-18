@@ -8,4 +8,4 @@ resources:
 images:
   - name: krtk
     newName: rg.fr-par.scw.cloud/djnd/krtk
-    newTag: '0fb5609fafd1df9e0f2815e441bd56487d18212a'
+    newTag: '4553bbcf3931fecd80c0bf44e3805b334c7e64e8'
