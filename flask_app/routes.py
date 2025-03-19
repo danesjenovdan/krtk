@@ -17,7 +17,7 @@ def init_routes(app: Flask) -> None:
     def redirect_to_main_page() -> Response:
         return redirect(DJND_MAIN_PAGE_URL)
 
-    @app.route("/short")
+    @app.route("/short/")
     def render_index() -> str:
         return render_template("shortener.html")
 
