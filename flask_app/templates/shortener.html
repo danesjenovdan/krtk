@@ -4,14 +4,23 @@
 <div class="shortener">
   <h3>Da se mi da URL</h3>
   <form class="box">
-    <input type="url" class="url-input" required autofocus />
-    <button class="btn-shorten">
-      <span>Pošortnaj</span>
-      <img
-        src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%2231.957%2035.93%2066.358%2055.2%22%3E%0A%20%20%3Cpath%20d%3D%22m68.357%2040.73%2019.7%2019.8h-53.1a3%203%200%200%200%200%206h53.1l-19.7%2019.8a3%203%200%200%200%204.2%204.2l24.9-24.9a3%203%200%200%200%200-4.2l-24.9-24.9a3%203%200%200%200-4.2%204.2z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
-        alt=""
-      />
-    </button>
+    <div class="row">
+      <input type="url" class="url-input" required autofocus />
+      <button class="btn-shorten">
+        <span>Pošortnaj</span>
+        <img
+          src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%2231.957%2035.93%2066.358%2055.2%22%3E%0A%20%20%3Cpath%20d%3D%22m68.357%2040.73%2019.7%2019.8h-53.1a3%203%200%200%200%200%206h53.1l-19.7%2019.8a3%203%200%200%200%204.2%204.2l24.9-24.9a3%203%200%200%200%200-4.2l-24.9-24.9a3%203%200%200%200-4.2%204.2z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
+          alt=""
+        />
+      </button>
+    </div>
+    <div class="row alias-row">
+      <label class="checkbox-label" for="is-custom-alias">
+        <input type="checkbox" name="is-custom-alias" id="is-custom-alias" />
+        <span>Hočem poljubni alias</span>
+      </label>
+      <input type="text" class="alias-input" style="display: none;" disabled />
+    </div>
   </form>
 </div>
 
@@ -19,8 +28,46 @@
   const form = document.querySelector(".box");
   const urlInput = form.querySelector(".url-input");
   const shortenButton = form.querySelector(".btn-shorten");
+  const aliasInput = form.querySelector(".alias-input");
+  const aliasCheckbox = form.querySelector("#is-custom-alias");
 
   let state = null;
+
+  function toggleAliasInput(isChecked) {
+    if (isChecked) {
+      aliasInput.style.display = "block";
+      aliasInput.disabled = false;
+      aliasInput.required = true;
+      aliasInput.focus();
+    } else {
+      aliasInput.value = "";
+      aliasInput.style.display = "none";
+      aliasInput.disabled = true;
+      aliasInput.required = false;
+    }
+  }
+
+  aliasCheckbox.addEventListener("change", (event) => {
+    toggleAliasInput(event.target.checked);
+  });
+  toggleAliasInput(aliasCheckbox.checked);
+
+  function isAliasValid(alias) {
+    const hasValidChars = /^[a-z0-9-]{1,20}$/.test(alias);
+    const startsWithLetter = /^[a-z]/i.test(alias);
+    const endsWithLetterOrDigit = /[a-z0-9]$/.test(alias);
+    return hasValidChars && startsWithLetter && endsWithLetterOrDigit;
+  }
+
+  function alertErrors(data) {
+    let str = "Napaka: ";
+    try {
+      str += JSON.stringify(data, null, 2);
+    } catch (e) {
+      str += String(data);
+    }
+    alert(str);
+  }
 
   async function postDataToServer(data = {}) {
     const response = await fetch("/_shorten_link", {
@@ -45,11 +92,18 @@
       return;
     }
 
+    if (aliasCheckbox.checked && !isAliasValid(aliasInput.value)) {
+      aliasInput.setCustomValidity("Alias lahko vsebuje samo male črke, številke in vezaje.");
+      aliasInput.reportValidity();
+      return;
+    }
+
     shortenButton.disabled = true;
     state = "loading";
 
     const [ok, data] = await postDataToServer({
       destination: urlInput.value,
+      alias: aliasCheckbox.checked ? aliasInput.value : undefined,
     });
 
     if (ok) {
@@ -68,6 +122,8 @@
 
       state = "error";
       shortenButton.querySelector("span").textContent = "Napaka :(";
+
+      alertErrors(data);
     }
   });
 </script>

@@ -88,11 +88,19 @@ main {
   padding: 1.5rem;
   margin-top: 1.5rem;
   border: 1px solid #333;
+}
+
+.shortener .row {
   display: flex;
   gap: 1rem;
 }
 
-.url-input {
+.shortener .row.alias-row {
+  margin-top: 1rem;
+}
+
+.url-input,
+.alias-input {
   flex: 1;
   padding: 0.75rem 1rem;
   font-family: inherit;
@@ -101,7 +109,12 @@ main {
   border: 1px solid #333;
 }
 
-.url-input:focus {
+.alias-input {
+  flex: 0.5;
+}
+
+.url-input:focus,
+.alias-input:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 1px #2563eb;
@@ -144,13 +157,32 @@ main {
   margin-bottom: -0.125rem;
 }
 
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+  min-height: 47px;
+}
+
+.checkbox-label span {
+  margin-top: -0.25rem;
+}
+
+.checkbox-label input {
+  width: 1rem;
+  height: 1rem;
+}
+
 @media (max-width: 768px) {
   .shortener h3 {
     font-size: 1.5rem;
     line-height: 1.5;
   }
 
-  .shortener .box {
+  .shortener .row {
     flex-direction: column;
   }
 
