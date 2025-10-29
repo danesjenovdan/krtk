@@ -19,7 +19,7 @@
         <input type="checkbox" name="is-custom-alias" id="is-custom-alias" />
         <span>Hočem poljubni alias</span>
       </label>
-      <input type="text" class="alias-input" style="display: none;" disabled />
+      <input type="text" class="alias-input" style="display: none" disabled />
     </div>
   </form>
 </div>
@@ -44,6 +44,7 @@
       aliasInput.style.display = "none";
       aliasInput.disabled = true;
       aliasInput.required = false;
+      aliasInput.setCustomValidity("");
     }
   }
 
@@ -52,12 +53,60 @@
   });
   toggleAliasInput(aliasCheckbox.checked);
 
-  function isAliasValid(alias) {
-    const hasValidChars = /^[a-z0-9-]{1,20}$/.test(alias);
-    const startsWithLetter = /^[a-z]/i.test(alias);
-    const endsWithLetterOrDigit = /[a-z0-9]$/.test(alias);
-    return hasValidChars && startsWithLetter && endsWithLetterOrDigit;
+  function checkAliasValidity() {
+    const alias = aliasInput.value;
+
+    if (alias.length < 3) {
+      aliasInput.setCustomValidity("Alias mora biti dolg vsaj 3 znake.");
+      aliasInput.reportValidity();
+      return false;
+    }
+
+    if (alias.length > 30) {
+      aliasInput.setCustomValidity("Alias ne sme biti daljši od 30 znakov.");
+      aliasInput.reportValidity();
+      return false;
+    }
+
+    if (!/^[a-z0-9-]+$/.test(alias)) {
+      aliasInput.setCustomValidity(
+        "Alias lahko vsebuje samo male črke, številke in vezaje."
+      );
+      aliasInput.reportValidity();
+      return false;
+    }
+
+    if (/\-\-/.test(alias)) {
+      aliasInput.setCustomValidity(
+        "Alias ne sme vsebovati zaporednih vezajev."
+      );
+      aliasInput.reportValidity();
+      return false;
+    }
+
+    if (!/^[a-z]/i.test(alias)) {
+      aliasInput.setCustomValidity("Alias se mora začeti z malo črko.");
+      aliasInput.reportValidity();
+      return false;
+    }
+
+    if (!/[a-z0-9]$/.test(alias)) {
+      aliasInput.setCustomValidity(
+        "Alias se mora končati z malo črko ali številko."
+      );
+      aliasInput.reportValidity();
+      return false;
+    }
+
+    aliasInput.setCustomValidity("");
+    return true;
   }
+
+  aliasInput.addEventListener("input", () => {
+    if (aliasCheckbox.checked) {
+      checkAliasValidity();
+    }
+  });
 
   function alertErrors(data) {
     let str = "Napaka: ";
@@ -92,9 +141,7 @@
       return;
     }
 
-    if (aliasCheckbox.checked && !isAliasValid(aliasInput.value)) {
-      aliasInput.setCustomValidity("Alias lahko vsebuje samo male črke, številke in vezaje.");
-      aliasInput.reportValidity();
+    if (aliasCheckbox.checked && !checkAliasValidity()) {
       return;
     }
 

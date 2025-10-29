@@ -64,7 +64,7 @@ def init_routes(app: Flask) -> None:
         response.mimetype = "text/plain"
         return response
 
-    @app.route("/<alias>")
+    @app.route("/<alias>", strict_slashes=False)
     def redirect_to_previously_shortened_url(alias: str) -> Response:
         destination = get_destination_for_alias(alias)
 
