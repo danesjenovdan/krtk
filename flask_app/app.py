@@ -19,8 +19,8 @@ def create_app() -> Flask:
     app.config["SQLALCHEMY_DATABASE_URI"] = URL.create(
         "postgresql+psycopg",
         host=os.getenv("FLASK_DATABASE_HOST", "db"),
-        database=os.getenv("FLASK_DATABASE_NAME", "flask"),
-        username=os.getenv("FLASK_DATABASE_USERNAME", "flask"),
+        database=os.getenv("FLASK_DATABASE_NAME", "krtk"),
+        username=os.getenv("FLASK_DATABASE_USERNAME", "krtk"),
         password=os.getenv("FLASK_DATABASE_PASSWORD", "changeme"),
         port=int(os.getenv("FLASK_DATABASE_PORT") or 5432),
     )
