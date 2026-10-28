@@ -19,7 +19,7 @@ mypy = "*"
 isort = "*"
 
 [requires]
-python_version = "3.13"
+python_version = "3.14"
 
 [scripts]
 check-types = "mypy --strict --exclude=[migrations,tests] ."

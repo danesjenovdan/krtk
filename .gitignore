@@ -1,5 +1,6 @@
 dump*.sql
 dump*.db
+db*.dump
 dump*.csv
 *.todo
 
